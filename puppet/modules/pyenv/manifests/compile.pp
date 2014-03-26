@@ -25,6 +25,7 @@ define pyenv::compile(
     group       => $group,
     cwd         => $home_path,
     creates     => "${versions}/${python}",
+    environment => [ "HOME=${home_path}" ],
     path        => $path,
     logoutput   => 'on_failure',
     before      => Exec["pyenv::rehash ${user} ${python}"],

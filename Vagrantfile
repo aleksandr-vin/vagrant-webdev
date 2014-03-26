@@ -5,13 +5,18 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box      = "hashicorp/precise64"
+  config.vm.hostname = "luvsandugar.dev"
 
-  # provision
-  config.vm.provision "puppet" do |puppet|
+  #### Provision ##############################################################
+  # upgrade puppet
+  config.vm.provision :shell, :path => "puppet/upgrade_puppet.sh"
+  # install software
+  config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
     puppet.module_path    = "puppet/modules"
     puppet.manifest_file  = "site.pp"
+    puppet.options        = "--parser future"
   end  
 
   # proxy config
